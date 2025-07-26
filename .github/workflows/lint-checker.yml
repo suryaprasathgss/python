@@ -1,0 +1,30 @@
+name: Super-Linter # Name of your workflow
+
+on:
+  push:
+    branches: [ "main" ] # Trigger on pushes to the main branch
+  pull_request:
+    branches: [ "main" ] # Trigger on pull requests to the main branch
+
+jobs:
+  super-lint:
+    name: Lint code base
+    runs-on: ubuntu-latest # Specify the runner environment
+    permissions:
+      contents: read
+      packages: read
+      statuses: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4 # Use a more recent version for checkout
+
+      - name: Run Super-Linter
+        uses: super-linter/super-linter@v7.4.0 # Use the latest version or a specific version
+        env:
+          DEFAULT_BRANCH: main
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Example: Only validate Python and HTML
+          # VALIDATE_PYTHON: true
+          # VALIDATE_HTML: true
+          # VALIDATE_ALL_CODEBASE: true # Lint the whole codebase
